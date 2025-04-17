@@ -1,0 +1,19 @@
+{
+  "manifest_version": 2,
+  "name": "Document Scanner",
+  "version": "1.0",
+  "description": "Document scanning extension that integrates with TRA Document Scanning API",
+  "permissions": [
+    "activeTab",
+    "https://tra-doc-scan.btdemo.biz/*"
+  ],
+  "browser_action": {
+    "default_popup": "index.html",
+    "default_title": "Document Scanner"
+  },
+  "icons": {
+    "16": "icon16.png",
+    "48": "icon48.png",
+    "128": "icon128.png"
+  }
+} 
