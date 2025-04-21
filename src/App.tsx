@@ -3,6 +3,7 @@ import Dashboard from './components/Dashboard';
 import DocumentRequest from './components/DocumentRequest';
 import CaseNumberEntry from './components/CaseNumberEntry';
 import apiService from './services/apiService';
+import { useGetCaseDataMutation } from './lib/feature/api/crmApi';
 
 interface TPSCaseData {
   CaseID: number;
@@ -23,23 +24,21 @@ interface TPSCaseData {
 
 function App() {
   const [currentPage, setCurrentPage] = useState<'caseEntry' | 'dashboard' | 'documentRequest'>('caseEntry');
-  const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [caseData, setCaseData] = useState<TPSCaseData | null>(null);
-
+  const [getCaseData, { isLoading, isError }] = useGetCaseDataMutation();
   const handleCaseNumberSubmit = async (caseNumber: string) => {
-    setIsLoading(true);
     setError(null);
     
     try {
-      const data = await apiService.getCaseData(caseNumber);
-      setCaseData(data);
-      setCurrentPage('dashboard');
+      const data = await getCaseData(caseNumber).unwrap();
+      if (data && data.status === 'success') {
+        setCaseData(data.data);
+        setCurrentPage('dashboard');  
+      }
     } catch (err) {
       setError('Failed to load case data. Please try again.');
-    } finally {
-      setIsLoading(false);
-    }
+    } 
   };
 
   if (currentPage === 'caseEntry') {
@@ -52,31 +51,52 @@ function App() {
         />
       </div>
     );
-  }
-
-  return (
-    <div className="w-[800px] min-h-screen bg-gray-50">
-      {currentPage === 'dashboard' && caseData ? (
-        <Dashboard 
-          caseData={{
-            caseNumber: caseData.CaseID.toString(),
-            clientName: `${caseData.FirstName} ${caseData.LastName}`,
-            status: caseData.StatusName,
-            address: `${caseData.Address}, ${caseData.City}, ${caseData.State} ${caseData.Zip}`,
-            email: caseData.Email,
-            phone: caseData.CellPhone || caseData.HomePhone || caseData.WorkPhone
-          }}
-          onRequestDocuments={() => setCurrentPage('documentRequest')}
-          onCaseChange={() => setCurrentPage('caseEntry')}
-        />
-      ) : (
-        <DocumentRequest 
+  } else if (currentPage === 'dashboard' && caseData) {
+    return (
+      <div className="w-[800px] min-h-screen bg-gray-50">
+        {currentPage === 'dashboard' && caseData ? (
+          <Dashboard
+            caseData={{
+              caseNumber: caseData.CaseID.toString(),
+              clientName: `${caseData.FirstName} ${caseData.LastName}`,
+              status: caseData.StatusName,
+              address: `${caseData.Address}, ${caseData.City}, ${caseData.State} ${caseData.Zip}`,
+              email: caseData.Email,
+              phone: caseData.CellPhone || caseData.HomePhone || caseData.WorkPhone
+            }}
+            onRequestDocuments={() => setCurrentPage('documentRequest')}
+            onCaseChange={() => setCurrentPage('caseEntry')}
+          />
+        ) : null}
+      </div>
+    );
+  } else if (currentPage === 'documentRequest') {
+    return (
+      <div className="w-[800px] min-h-screen bg-gray-50">
+        <DocumentRequest
           onBack={() => setCurrentPage('dashboard')}
           caseId={caseData?.CaseID.toString() || ''}
+          caseData={{ email: caseData?.Email || '', phone: caseData?.CellPhone || caseData?.HomePhone || caseData?.WorkPhone || '' }} 
         />
-      )}
-    </div>
-  );
+      </div>
+    );
+  } else {
+    return (
+      <div className="w-[800px] min-h-screen bg-gray-50">
+        <h1 className="text-center text-2xl font-bold">Welcome to the Case Management System</h1>
+        <p className="text-center text-gray-600">Please enter a case number to get started.</p>
+        <CaseNumberEntry
+          onSubmit={handleCaseNumberSubmit}
+          isLoading={isLoading}
+          error={error}
+        />
+      </div>
+    );
+  }
+
+
+
+
 }
 
 export default App; 
