@@ -45,7 +45,7 @@ const DocumentRequest: React.FC<DocumentRequestProps> = ({ onBack, caseId, caseD
       const formattedPhone = phone.replace(/[^0-9]/g, '');
       const payload = {
         caseId,
-        email: (deliveryMethod === 'text') ? '' : 'trushar.narodia@bytestechnolab.com',
+        email: (deliveryMethod === 'text') ? '' : email,
         phone: (deliveryMethod === 'email') ? '' : formattedPhone,
         linkLimitation: 'single',
         requireDocList: documentListFormatted

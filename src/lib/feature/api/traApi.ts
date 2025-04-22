@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
-const TRA_API_KEY = process.env.NEXT_PUBLIC_TRA_API_KEY;
+const TRA_API_KEY = import.meta.env.VITE_TRA_API_KEY;
 
 export interface RequiredDoc {
     docName: string;
