@@ -149,7 +149,7 @@ const DocumentRequest: React.FC<DocumentRequestProps> = ({ onBack, caseId, caseD
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-blue-500"
                 placeholder="Enter email address"
               />
             </div>
@@ -162,7 +162,7 @@ const DocumentRequest: React.FC<DocumentRequestProps> = ({ onBack, caseId, caseD
                 type="tel"
                 value={phone}
                 onChange={(e) => setPhone(e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-blue-500"
                 placeholder="Enter phone number"
               />
             </div>

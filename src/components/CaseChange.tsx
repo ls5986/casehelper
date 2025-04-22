@@ -44,7 +44,7 @@ const CaseChange: React.FC<CaseChangeProps> = ({ onSuccess, onCancel }) => {
               id="caseNumber"
               value={newCaseNumber}
               onChange={(e) => setNewCaseNumber(e.target.value)}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-blue-500"
               placeholder="Enter new case number"
               required
             />

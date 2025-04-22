@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
-const TPS_API_KEY = '4917fa0ce4694529a9b97ead1a60c932';
+const TPS_API_KEY = process.env.NEXT_PUBLIC_TPS_API_KEY;
 export const crmAPI = createApi({
     reducerPath: 'crmApi',
     baseQuery: fetchBaseQuery({ baseUrl: 'https://tps.logiqs.com/publicapi/2020-02-22' }),
