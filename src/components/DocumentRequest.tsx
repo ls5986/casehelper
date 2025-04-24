@@ -58,8 +58,12 @@ const DocumentRequest: React.FC<DocumentRequestProps> = ({ onBack, caseId, caseD
         setIsDocReqSend(false);
       }
 
-    } catch (err) {
-      setError('Failed to submit document request. Please try again.');
+    } catch (err: any) {
+      if (err.data.statusCode === 401) {
+        setError('Unauthorized access. Please check your credentials.');
+      } else {
+        setError(err?.data?.message || 'Failed to submit document request. Please try again.');
+      }
     } finally {
       setIsLoading(false);
     }
