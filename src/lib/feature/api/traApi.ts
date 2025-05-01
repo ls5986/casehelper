@@ -1,4 +1,5 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
+import envConfig from '../../../config/env.config';
 const TRA_API_KEY = import.meta.env.VITE_TRA_API_KEY;
 
 export interface RequiredDoc {
@@ -16,9 +17,9 @@ export interface ScanRequest {
 export const traAPI = createApi({
     reducerPath: 'traApi',
     baseQuery: fetchBaseQuery({ 
-        baseUrl: 'https://tra-doc-scan.btdemo.biz',
+        baseUrl: envConfig.BACKEND_API_URL,
         headers: {
-            'Authorization': `Bearer ${TRA_API_KEY}`
+            'Authorization': `Bearer ${envConfig.BACKEND_API_KEY}`
         }
     }),
     endpoints: (builder) => ({
