@@ -19,22 +19,16 @@ const DocumentRequest: React.FC<DocumentRequestProps> = ({ onBack, caseId, caseD
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
   const [isDocReqSend, setIsDocReqSend] = useState(false);
-
-  const [sendScanRequest, { isLoading: isSending }] = useSendScanRequestMutation();
-
-
-
-  const documentOptions = [
+  const [documentOptions, setDocumentOptions] = useState<string[]>([
     'Tax Returns',
     'W-2 Forms',
     'Bank Statements',
     'Pay Stubs',
     'ID Verification',
     'Power of Attorney',
-    'Financial Statement',
-    'Other Documents'
-  ];
-
+    'Financial Statement'
+  ]);
+  const [sendScanRequest, { isLoading: isSending }] = useSendScanRequestMutation();
 
   const handleSubmit = async () => {
     setError('');
@@ -187,6 +181,33 @@ const DocumentRequest: React.FC<DocumentRequestProps> = ({ onBack, caseId, caseD
                     {doc}
                   </label>
                 ))}
+                <div className="flex items-center p-3 border rounded-md hover:bg-gray-50 col-span-2">
+                  <input
+                    type="text"
+                    placeholder="Add custom document..."
+                    className="flex-grow px-3 py-2 border border-gray-300 rounded-l-md focus:outline-none focus:border-blue-500"
+                    onKeyPress={(e) => {
+                      if (e.key === 'Enter' && e.currentTarget.value.trim()) {
+                        setDocumentOptions([...documentOptions, e.currentTarget.value.trim()]);
+                        e.currentTarget.value = '';
+                        e.preventDefault();
+                      }
+                    }}
+                  />
+                  <button
+                    type="button"
+                    className="px-3 py-2 bg-blue-500 text-white rounded-r-md hover:bg-blue-600"
+                    onClick={(e) => {
+                      const input = e.currentTarget.previousSibling as HTMLInputElement;
+                      if (input.value.trim()) {
+                        setDocumentOptions([...documentOptions, input.value.trim()]);
+                        input.value = '';
+                      }
+                    }}
+                  >
+                    Add
+                  </button>
+                </div>
               </div>
             </div>
 
